@@ -96,7 +96,11 @@
       </el-form-item>
 
       <el-form-item label="身份证号码">
-        <el-input v-model="form.idCard" style="width: 220px"></el-input>
+        <el-input
+          v-model="form.idCard"
+          @blur="getIdCard"
+          style="width: 220px"
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="入职时间">
@@ -153,6 +157,9 @@ import { ref, computed, reactive, defineProps } from "vue";
 import { ElNotification } from "element-plus";
 import r from "../network/func";
 import { useRouter } from "vue-router";
+// toolfunc.ts
+
+import { getIdCard_Last_SIX } from "../toolfuncs";
 export default {
   name: "Department",
 };
@@ -319,6 +326,12 @@ const onConfirm = async function () {
   await r.requestUpdataInfo(updataForm);
   gq();
   dialogFormVisible.value = false;
+};
+
+// 取身份证的最后6位
+const getIdCard = function () {
+  let lastnumber = getIdCard_Last_SIX(form.idCard);
+  form.id = lastnumber;
 };
 
 //删除操作

@@ -31,7 +31,7 @@
       <el-input
         v-model="form.idCard"
         style="width: 220px"
-        @blur="idcardLeave"
+        @blur="getIdCard"
       ></el-input>
     </el-form-item>
 
@@ -81,7 +81,8 @@
     </el-form-item>
   </el-form>
   <el-button color="#2f3542" type="success" @click="submitForm()"
-    >入职</el-button>
+    >入职</el-button
+  >
 </template>
 
 <script lang="ts">
@@ -89,6 +90,8 @@ import { reactive, ref } from "vue";
 import { ElNotification } from "element-plus";
 import { useRouter } from "vue-router";
 import r from "../network/func";
+// toolfunc.ts
+import { getIdCard_Last_SIX } from "../toolfuncs";
 export default {
   name: "CreateNewUser",
 };
@@ -165,12 +168,12 @@ const rules = {
 // });
 const form: formType = reactive({
   id: "",
-  name: "李梓维",
+  name: "cumin",
   sex: "male",
   birthday: "2003年01月03日",
-  idCard: "350722200301035710",
+  idCard: "350722200301000000",
   joinDate: "2021年06年月15日",
-  number: "15999898675",
+  number: "15999890000",
   salary: "6000",
   grade: "c1",
   department: "客服组",
@@ -217,10 +220,10 @@ const submitForm = () => {
 };
 
 // 取身份证的最后6位
-function idcardLeave() {
-  let lastnumber = form.idCard.substring(form.idCard.length - 6);
+const getIdCard = function () {
+  let lastnumber = getIdCard_Last_SIX(form.idCard);
   form.id = lastnumber;
-}
+};
 </script>
 
 <style lang="scss" scoped>
