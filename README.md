@@ -1,11 +1,22 @@
-# Vue 3 + Typescript + Vite
+# Vue 3 + Typescript + Vite + Node + MySQL
+技术选型 Vue 3 + Typescript + Vite + Node + MySQL
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# 安装
+1、yarn init
 
-## Recommended IDE Setup
+2、yarn run dev
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+# 项目介绍
 
-## Type Support For `.vue` Imports in TS
+员工入职系统
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+1. 新员工入职
+2. 增删改查
+3. 搜索员工功能
+4. 后端使用Node接口 + MySQL
+
+
+clone 体验以下
+入门级练手项目
+
+
