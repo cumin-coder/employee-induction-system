@@ -100,7 +100,6 @@ export default {
 
 
 <script lang="ts" setup>
-console.log("setup");
 // 随机数
 const codeid = Math.random() * (9 + 1) * 10000;
 
@@ -154,21 +153,10 @@ const rules = {
     { min: 11, max: 11, message: "请输入正确的手机号", trigger: "blur" },
   ],
 };
-// const form: formType = reactive({
-//   id: "",
-//   name: "",
-//   sex: "male",
-//   birthday: "",
-//   idCard: "",
-//   joinDate: "",
-//   number: "",
-//   salary: "",
-//   grade: "c1",
-//   department: "",
-// });
+
 const form: formType = reactive({
   id: "",
-  name: "cumin",
+  name: "cu",
   sex: "male",
   birthday: "2003年01月03日",
   idCard: "350722200301000000",

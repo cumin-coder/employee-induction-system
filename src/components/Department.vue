@@ -4,14 +4,16 @@
     <div class="input-item">
       <input
         v-model="search"
+        clearable
         type="text"
         placeholder="请输入员工姓名 . . ."
         class="input"
       />
-      <div class="input-btn">搜索</div>
+      <div class="input-btn" @click="searchStart">搜索</div>
     </div>
+    <el-button @click="clickBack">返回</el-button>
   </div>
-  <el-table :data="filterTableData" border height="500px">
+  <el-table v-loading="loading" :data="tableData.qi" border height="500px">
     <el-table-column label="员工 ID" prop="id" />
     <el-table-column label="姓名" prop="name" />
     <el-table-column label="性别" prop="sex" />
@@ -52,6 +54,8 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <!-- 翻页栏 -->
   <div class="paging" v-if="props.isShowSearch">
     <el-pagination
       popper-class="cumin"
@@ -97,8 +101,8 @@
 
       <el-form-item label="身份证号码">
         <el-input
+          disabled
           v-model="form.idCard"
-          @blur="getIdCard"
           style="width: 220px"
         ></el-input>
       </el-form-item>
@@ -153,7 +157,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, reactive, defineProps } from "vue";
+import { ref, onMounted, computed, reactive, defineProps } from "vue";
 import { ElNotification } from "element-plus";
 import r from "../network/func";
 import { useRouter } from "vue-router";
@@ -201,6 +205,7 @@ let tableData = reactive({
   hasPreviousPage: true, // 有上一页？
 });
 const search = ref("");
+const loading = ref(true);
 const dialogFormVisible = ref(false);
 const form = reactive({
   id: "",
@@ -219,6 +224,26 @@ const router = useRouter();
 /**
  * ---------------------------------------------------------------------------------------------
  */
+onMounted(() => {
+  // 第一次执行，显示数据
+  gq();
+});
+
+const searchStart = async () => {
+  if (!search.value.length) return;
+  loading.value = true;
+
+  const { data } = await r.requestSearchUser(search.value);
+  tableData.qi = data.msg;
+  loading.value = false;
+};
+
+const clickBack = () => {
+  if (search.value) {
+    search.value = "";
+    gq();
+  }
+};
 
 // 分页下拉框内容发生改变
 const handleSizeChange = (val: number) => {
@@ -236,17 +261,6 @@ const handleCurrentChange = (val: number) => {
   });
 };
 
-//搜索框改变时触发
-const searchInput = async function (name: String) {
-  // 调用查找接口，获取数据
-  const { data } = await r.requestSearchUser(name);
-  tableData.qi = data.msg;
-  // 当数据是空的时候
-  if (!tableData.qi.length) {
-    gq();
-  }
-};
-
 /**
  * @gq 获取指定部门人员信息 || 获取所有部门人员信息
  * @g getSecurity()
@@ -261,6 +275,7 @@ function gq() {
     r.requestGetSecurity(props.NAME ? props.NAME.name : null).then((res) => {
       const { msg } = res;
       tableData.qi = msg;
+      loading.value = false;
     });
   } else {
     /**
@@ -269,22 +284,16 @@ function gq() {
      */
     r.requestGetPaing(0, tableData.pageSize).then((res) => {
       tableData.qi = res.data;
+      loading.value = false;
     });
+
+    // 获取所有部门人员数量-接口
     r.request_qi_requestQueryinfo().then((res) => {
       let { result } = res;
       tableData.total = result.length;
     });
   }
 }
-// 第一次执行，显示数据
-gq();
-const filterTableData = computed(() =>
-  tableData.qi.filter(
-    (data: any) =>
-      !search.value ||
-      data.name.toLowerCase().includes(search.value.toLowerCase())
-  )
-);
 
 // 1.打开修改操作
 const handleEdit = (index: number, row: User) => {
@@ -322,16 +331,11 @@ const handleEdit = (index: number, row: User) => {
 const onConfirm = async function () {
   // 1，拿到修改后的数据
   const updataForm = form;
+  console.log(updataForm);
   // 2. 调用接口修改数据
   await r.requestUpdataInfo(updataForm);
   gq();
   dialogFormVisible.value = false;
-};
-
-// 取身份证的最后6位
-const getIdCard = function () {
-  let lastnumber = getIdCard_Last_SIX(form.idCard);
-  form.id = lastnumber;
 };
 
 //删除操作

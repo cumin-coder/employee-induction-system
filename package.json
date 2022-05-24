@@ -1,11 +1,11 @@
 {
-  "name": "cumin",
+  "name": "EmployeeEntrySystem",
   "private": true,
-  "version": "0.0.0",
+  "version": "c.01",
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview --host --port 2003"
+    "preview": "vite preview --host --port 3000"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -25,5 +25,10 @@
     "unplugin-vue-components": "^0.17.21",
     "vite": "^2.8.0",
     "vue-tsc": "^0.29.8"
-  }
+  },
+  "description": "1",
+  "main": "1",
+  "repository": "1",
+  "author": "cumin-coder <1254348304@qq.com>",
+  "license": "MIT"
 }
